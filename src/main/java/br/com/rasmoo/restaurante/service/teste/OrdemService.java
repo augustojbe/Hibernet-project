@@ -4,6 +4,7 @@ import br.com.rasmoo.restaurante.dao.CardapioDao;
 import br.com.rasmoo.restaurante.dao.ClienteDao;
 import br.com.rasmoo.restaurante.dao.OrdemDao;
 import br.com.rasmoo.restaurante.entity.Cliente;
+import br.com.rasmoo.restaurante.entity.Endereco;
 import br.com.rasmoo.restaurante.entity.Ordem;
 import br.com.rasmoo.restaurante.entity.OrdensCardapio;
 import br.com.rasmoo.restaurante.util.CargaDeDadosUtil;
@@ -24,13 +25,15 @@ public class OrdemService {
         ClienteDao clienteDao = new ClienteDao(entityManager);
         OrdemDao ordemDao = new OrdemDao(entityManager);
 
-        Cliente augusto = new Cliente("02677774545", "Augusto", "1111111");
+        Endereco endereco = new Endereco("Rua das Flores","000-000","Fortaleza", "Ceara", "Casa -b" );
+        Cliente augusto = new Cliente("Augusto", "000-001212-12");
+        augusto.addEndereco(endereco);
         Ordem ordem = new Ordem(augusto);
-        ordem.addOrdensCardapio(new OrdensCardapio(cardapioDao.consultarPorId(1), 2));
+        ordem.addOrdensCardapio(new OrdensCardapio(cardapioDao.consultarPorId(1), 1));
 
         clienteDao.cadastrar(augusto);
         ordemDao.cadastrar(ordem);
-        System.out.println(ordem.getOrdensCardapioList());
+        System.out.println(ordem);
         entityManager.getTransaction().commit();
         entityManager.close();
 

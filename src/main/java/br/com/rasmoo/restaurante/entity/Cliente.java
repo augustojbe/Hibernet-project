@@ -1,22 +1,23 @@
 package br.com.rasmoo.restaurante.entity;
 
-import javax.persistence.Entity;
-import javax.persistence.Id;
-import javax.persistence.Table;
+import javax.persistence.*;
+
+import java.util.ArrayList;
+import java.util.List;
 
 @Entity
 @Table(name = "clientes")
 public class Cliente {
 
-   @Id
+    @Id
     private String cpf;
 
     private String nome;
 
-    private String cep;
+    @OneToMany(mappedBy = "cliente", cascade = CascadeType.ALL)
+    private List<Endereco> enderecoList = new ArrayList<>();
 
-    public Cliente(String cep, String nome, String cpf) {
-        this.cep = cep;
+    public Cliente(String nome, String cpf) {
         this.nome = nome;
         this.cpf = cpf;
     }
@@ -40,20 +41,18 @@ public class Cliente {
         this.nome = nome;
     }
 
-    public String getCep() {
-        return cep;
+    public void addEndereco(Endereco endereco){
+        endereco.setCliente(this);
+        this.addEndereco(endereco);
     }
 
-    public void setCep(String cep) {
-        this.cep = cep;
-    }
 
     @Override
     public String toString() {
         return "Cliente{" +
                 "cpf='" + cpf + '\'' +
                 ", nome='" + nome + '\'' +
-                ", cep='" + cep + '\'' +
+                ", enderecoList=" + enderecoList +
                 '}';
     }
 }
